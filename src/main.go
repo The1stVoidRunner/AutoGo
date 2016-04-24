@@ -7,9 +7,9 @@ import (
 	"time"
 	"github.com/bwmarrin/discordgo"
 	"strings"
-	"encoding/json"
 	"io/ioutil"
 	"strconv"
+	"encoding/json"
 //	"github.com/zymtom/argconf"
 )
 	var err error
@@ -19,6 +19,9 @@ import (
 
 
 
+type update struct {
+	Version		int
+}
 
 
 
@@ -62,16 +65,6 @@ func isMaster(server string, user string) bool {
 
 
 
-
-
-
-
-
-
-
-
-
-
 func main() {
 
 	file, err := ioutil.ReadFile("config.json")
@@ -98,14 +91,6 @@ func main() {
 	fmt.Scanln(&input)
 	return
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -206,6 +191,8 @@ if err == nil {
 
 
 
+
+
 if m.Author.ID != s.State.User.ID {
  // -#$-
 var auto []string
@@ -225,43 +212,46 @@ if err == nil {
 		}
 
 
-	if dont == false { // doing this to check for excluded roles
-		ardat := strings.Split(ars, "-#$-")
+
+		if dont == false && strings.Contains(ars, "=") {
+	//	fmt.Println("RAW: " + ars)
+		ardat := strings.Split(ars, "=")
 		trigger := ardat[0]
-		response := ardat[1]
+		response := strings.Replace(ars, trigger+"=", "", -1)
+	//	response := ardat[1]
+		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
+		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
+		
+
+		cntrole := 0
+		/*
 		// lets work on excluding roles from triggers.
 		if strings.Contains(response, "{exc=") {
 			newdat := strings.Split(response, "{exc=")
 			newdat = strings.Split(newdat[1], "}")
 			exclude := newdat[0]
-
 			// let's see if it's multiple roles or just one.
 			if strings.Contains(exclude, ",") {
-				for _, vR := range exclude {
+				excluded := strings.Split(exclude, ",")
+				for _, vR := range excluded {
 					if isMemberRole(s, c.GuildID, m.Author.ID, vR) == true {
-						dont = true
+						fmt.Println("Found the role "+vR)
+						response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
+						cntrole++
 					}
 				} // checking for multiple ppl.
 			} else {
 				// only a single role is detected.
 				if isMemberRole(s, c.GuildID, m.Author.ID, exclude) == true {
-					dont = true
+					fmt.Println("Found the single role: "+exclude)
+					response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
+					cntrole++
 				}
 			} // end of excludes check
 		} // end of excluding roles from triggers
-	} // end of dont == false
+		*/
 
 
-
-
-		if dont == false {
-	//	fmt.Println("RAW: " + ars)
-		ardat := strings.Split(ars, "-#$-")
-		trigger := ardat[0]
-		response := ardat[1]
-		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
-		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
-		
 
 
 		if strings.HasPrefix(trigger, "&") {
@@ -282,7 +272,10 @@ if err == nil {
 		ispm = true
 	}
 
-
+	if strings.Contains(response, ":br") {
+		response = strings.Replace(response, ":br", "\n", -1)
+	}
+	if cntrole == 0 {
 	//	fmt.Println("Trigger: " + trigger)
 	//	fmt.Println("Response: " + response)
 		// just a basic ARS trigger. Later i will code for {find=word}
@@ -307,6 +300,7 @@ if err == nil {
 			time.Sleep(1000 * time.Millisecond)
 			s.ChannelMessageSend(m.ChannelID, response)				
 		}
+		} // end of cntrole == 0
 		} // end of dont == false
 	} // end of for loop
 } // check to see if they have autoresponse.txt file in bot dir.
@@ -377,10 +371,13 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 			}
 			ts := in.CmdsRun
 			i := strconv.Itoa(ts)
+
+			var _ = bm + i
+
 	//		fmt.Println("Converted: " + i)
 	//		fmt.Println(in.CmdsRun)
 		
-		s.ChannelMessageSend(m.ChannelID, "```ruby\nEcho [BETA]\nlibrary: DiscordGO\nrequests: "+i+"\nyou: "+m.Author.Username+"\ncommander: "+bm+"\n---------\n"+in.Prefix+"help, "+in.Prefix+cmd.AddMaster+", "+in.Prefix+cmd.Greet+"\n"+in.Prefix+cmd.Bye+", "+in.Prefix+cmd.DenyLinks+", "+in.Prefix+cmd.AllowLinks+"\n"+in.Prefix+cmd.Prefix+", "+in.Prefix+cmd.Autorole+", "+in.Prefix+"invites\n"+in.Prefix+cmd.Kick+", "+in.Prefix+cmd.Ban+", "+in.Prefix+cmd.Giveme+"\n"+in.Prefix+cmd.SetPunish+", "+in.Prefix+cmd.Meme+", "+in.Prefix+cmd.Joke+"\n"+in.Prefix+cmd.Give+", "+in.Prefix+cmd.Take+", "+in.Prefix+cmd.Mute+"\n"+in.Prefix+cmd.Unmute+"```")
+		s.ChannelMessageSend(m.ChannelID, in.HelpCmd)
 		}
 
 
@@ -1401,7 +1398,7 @@ if str == "off" {
 			data := ""
 			s.ChannelTyping(m.ChannelID)
 			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, "Invites for: `"+in.Name+"`\n```ruby\nGrabbing Results..```")
+			s.ChannelMessageSend(m.ChannelID, "Invites for: `"+c.GuildID+"`\n```ruby\nGrabbing Results..```")
 			for _, v := range o {
 			data = data + "\nissuer: "+v.Inviter.Username+"\ncode: "+v.Code
 			// s.ChannelMessageDelete(m.ChannelID, theid)
@@ -1576,7 +1573,8 @@ if strings.Contains(strings.ToLower(m.Content), "--avatar") && in.Admin == m.Aut
 		time.Sleep(1000 * time.Millisecond)
 		s.ChannelMessageSend(m.ChannelID, "Attempting status change.")
 		s.UpdateStatus(0, str)
-		return
+		time.Sleep(500 * time.Millisecond)
+		s.UpdateStatus(0, str)
 	}
 
 
@@ -1613,16 +1611,12 @@ return
 
 // ############## Pm's??
 
-if c.GuildID == "" {
-	fmt.Println("Is PM")
+if c.GuildID == "" && in.Admin == "" {
 	k, err := s.UserChannelCreate(m.Author.ID)
 	if err == nil {
 		s.ChannelTyping(k.ID)
 		time.Sleep(1000 * time.Millisecond)
 
-
-
-if in.Admin == "" {
 	fmt.Println("Install Worked! Author ID: " + m.Author.ID)
 	in.Admin = m.Author.ID
 	newConf := obj{
@@ -1650,9 +1644,6 @@ if in.Admin == "" {
 		fmt.Println(err)
 	}
 s.ChannelMessageSend(k.ID, "You have sucessfully installed `AutoGo` check out `commands.json` to customize the command names. and check out `autoresponse.txt` to add mew auto responses!")
-}
-
-
 
 }
 }
@@ -1747,7 +1738,13 @@ s.ChannelMessageSend(m.GuildID, data)
 
 
 func onReady(s *discordgo.Session, event *discordgo.Ready) {
-	s.UpdateStatus(0, "Type: --help cmdname")
+	var in obj
+	vfile, err := ioutil.ReadFile("config.json")
+	if err == nil {
+		json.Unmarshal(vfile, &in)
+	}
+
+	s.UpdateStatus(0, in.Status)
 }
 
 

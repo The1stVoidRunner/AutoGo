@@ -3,7 +3,7 @@ package main
 type obj struct {
 	Bot 			string
 	Admin 			string
-	Status 			int
+	Status 			string
 	BotMaster		bool
 	BotCommander	string
 	CmdsRun			int

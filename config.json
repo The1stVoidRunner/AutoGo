@@ -1,7 +1,7 @@
 {
   "Bot":			"YOUR-BOT-TOKEN-HERE",
   "Admin":			"",
-  "Status":			"What's Up!",
+  "Status":			"AutoGo 1.5.1",
   "BotMaster": 		false,
   "BotCommander":	"",
   "CmdsRun":		0,
