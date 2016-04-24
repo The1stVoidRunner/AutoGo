@@ -17,6 +17,7 @@ type obj struct {
 	Silent		bool
 	Active		string
 	HelpCmd		string
+	BotAutoRole	string
 }
 
 
@@ -53,4 +54,5 @@ type commands struct {
 	Giveme			string
 	Mute			string
 	Unmute			string
+	BotAutoRole		string
 }

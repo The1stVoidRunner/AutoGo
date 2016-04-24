@@ -331,6 +331,7 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 		}
 	b, err := json.Marshal(newConf)
 	if err == nil {
@@ -538,6 +539,7 @@ if in.Admin == m.Author.ID && strings.HasPrefix(m.Content, in.Prefix + "rename")
 		Giveme:			cmd.Giveme,
 		Mute:			cmd.Mute,
 		Unmute:			cmd.Unmute,
+		BotAutoRole:	cmd.BotAutoRole,
 	}
 	b, err := json.Marshal(newConf)
 	if err == nil {
@@ -942,6 +944,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Greet) {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 			}
 			b, err := json.Marshal(newjs)
 			if err == nil {
@@ -995,6 +998,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 	}
 		b, err := json.Marshal(newjs)
 		if err == nil {
@@ -1084,6 +1088,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 		}
 		b, err := json.Marshal(newjs)
 		if err == nil {
@@ -1135,6 +1140,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 		}
 		b, err := json.Marshal(newjs)
 		if err == nil {
@@ -1184,6 +1190,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 		}
 		b, err := json.Marshal(newjs)
 		if err == nil {
@@ -1245,6 +1252,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		Action:			str,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 			}
 			b, err := json.Marshal(newjs)
 			if err == nil {
@@ -1316,6 +1324,7 @@ if str != "off" {
 		Action:			in.Action,
 		Silent:			br,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 			}
 		b, err := json.Marshal(newjs)
 		if err == nil {
@@ -1348,6 +1357,7 @@ if str == "off" {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 			}
 		b, err := json.Marshal(newjs)
 		if err == nil {
@@ -1368,6 +1378,119 @@ if str == "off" {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.BotAutoRole) {
+str := strings.Replace(m.Content, in.Prefix + cmd.BotAutoRole + " ", "", -1)
+
+cnt := 0
+roles, err := s.GuildRoles(c.GuildID)
+if err != nil {
+fmt.Println(err)
+}
+
+if str != "off" {
+ for _, v := range roles {
+    if v.Name == str {
+    	cnt++
+		newjs := obj{
+		Bot:			in.Bot,
+		Admin:			in.Admin,
+		Status:			in.Status,
+		BotMaster:		in.BotMaster,
+		BotCommander:	in.BotCommander,
+		CmdsRun:		in.CmdsRun,
+		Prefix:			in.Prefix,
+		GreetMsg:		in.GreetMsg,
+		ByeMsg:			in.ByeMsg,
+		RoleSys:		in.RoleSys,
+		Name:			in.Name,
+		AntiLink:		in.AntiLink,
+		Action:			in.Action,
+		Silent:			in.Silent,
+		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	str,
+			}
+		b, err := json.Marshal(newjs)
+		if err == nil {
+			ioutil.WriteFile("config.json", b, 0777)
+		}
+		s.ChannelTyping(m.ChannelID)
+		time.Sleep(1000 * time.Millisecond)
+		s.ChannelMessageSend(m.ChannelID, "New bots will get the role `"+str+"`")
+		return
+	}
+}
+} // make sure they don't want to turn the autorole off
+
+
+if str == "off" {
+	cnt = 1
+		newjs := obj{
+		Bot:			in.Bot,
+		Admin:			in.Admin,
+		Status:			in.Status,
+		BotMaster:		in.BotMaster,
+		BotCommander:	in.BotCommander,
+		CmdsRun:		in.CmdsRun,
+		Prefix:			in.Prefix,
+		GreetMsg:		in.GreetMsg,
+		ByeMsg:			in.ByeMsg,
+		RoleSys:		in.RoleSys,
+		Name:			in.Name,
+		AntiLink:		in.AntiLink,
+		Action:			in.Action,
+		Silent:			in.Silent,
+		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	"off",
+			}
+		b, err := json.Marshal(newjs)
+		if err == nil {
+			ioutil.WriteFile("config.json", b, 0777)
+		}
+		s.ChannelTyping(m.ChannelID)
+		time.Sleep(1000 * time.Millisecond)
+		s.ChannelMessageSend(m.ChannelID, "Bot Autorole => `Disabled`")
+}
+
+
+
+
+	if cnt == 0 {
+		s.ChannelTyping(m.ChannelID)
+		time.Sleep(1000 * time.Millisecond)
+		s.ChannelMessageSend(m.ChannelID, "I can't find the role `"+str+"` make sure to check spelling, this is case sensitive.")
+	}
+}
 
 
 
@@ -1681,10 +1804,12 @@ func GuildMemberAdd(s *discordgo.Session, m *discordgo.GuildMemberAdd) {
 			s.ChannelMessageSend(m.GuildID, data)
 		}
 
-		if err == nil {
- 			for _, v := range roles {
-    			if v.Name == in.RoleSys {
-    				if in.RoleSys != "" && in.RoleSys != "off" {
+
+if m.User.Bot == false {
+	if err == nil {
+ 		for _, v := range roles {
+    		if v.Name == in.RoleSys {
+    			if in.RoleSys != "" && in.RoleSys != "off" {
     				m.Roles = append(m.Roles, v.ID)
     				s.GuildMemberEdit(m.GuildID, m.User.ID, m.Roles)
     				if in.Silent == false {
@@ -1693,7 +1818,31 @@ func GuildMemberAdd(s *discordgo.Session, m *discordgo.GuildMemberAdd) {
 				}
     		}
   		}
-	}
+	} // end of err == nil
+}
+
+
+
+if m.User.Bot == true {
+	if err == nil {
+ 		for _, v := range roles {
+    		if v.Name == in.BotAutoRole {
+    			if in.BotAutoRole != "" && in.BotAutoRole != "off" {
+    				m.Roles = append(m.Roles, v.ID)
+    				s.GuildMemberEdit(m.GuildID, m.User.ID, m.Roles)
+    				if in.Silent == false {
+						s.ChannelMessageSend(m.GuildID, "**A bot has been detected.** I've given <@"+m.User.ID+"> the role `"+in.BotAutoRole+"`")
+					}
+				}
+    		}
+  		}
+	} // end of err == nil
+}
+
+
+
+
+
 } // end of GuildMemberAdd
 
 

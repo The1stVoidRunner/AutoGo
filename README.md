@@ -3,6 +3,9 @@
 > AutoGo Written by: Proxy<br>
 > Appmaker written by: bwmarrin<br>
 
+### Coming Soon:
+> Custom Responses to every command.
+> more soon.
 
 <br><br>
 First You need to make a bot account by visiting the link below<br>
@@ -71,6 +74,11 @@ false: Silently adds the member to the specified autorole.<br>
 Here you can customize what they will see when --help command is triggered.
 <br>
 
+### BOTAUTOROLE
+Autorole for Bot Accounts. This will detect OAuth bots<br>
+and than give tham whatever role you choose!<br>
+
+<Br>
 
 ### CUSTOM COMMAND NAMES (YOU HAVE TO EDIT THESE MANUALLY IN COMMANDS.JSON)
 <br>
@@ -95,7 +103,8 @@ Let's look at the ORIGINAL commands.json file
 	"Take":			"take",
 	"Giveme":		"giveme",
 	"Mute":			"mute",
-	"Unmute":		"unmute"
+	"Unmute":		"unmute",
+	"BotAutoRole":	"botrole"
 }
 </pre>
 <br>
@@ -120,7 +129,8 @@ Let's change the addmaster and delmaster to givemaster and takemaster
 	"Take":			"take",
 	"Giveme":		"giveme",
 	"Mute":			"mute",
-	"Unmute":		"unmute"
+	"Unmute":		"unmute",
+	"BotAutoRole":	"botrole"
 }
 </pre>
 Now you will need to type --givemaster and --takemaster.<br>
@@ -167,7 +177,6 @@ or rename it.
 AutoGo has an Auto Response System! However it's new<br>
 So it's very basic at the moment. if you open autoresponse.txt<br>
 you will get ideas of what you need to do to add an auto response!<br>
-
 
 <br>
 

@@ -13,5 +13,6 @@
   "AntiLink":		false,
   "Action":			"kick",
   "Silent":			false,
-  "HelpCmd":		"```ruby\nYour Bot Name\n-------\n--greet, --bye, --prefix\n--kick, --ban, --autorole\n --setpunish, --allowlinks, --denylinks\n--help, --addmaster, --delmaster```"
+  "HelpCmd":		"```ruby\nYour Bot Name\n-------\n--greet, --bye, --prefix\n--kick, --ban, --autorole\n --setpunish, --allowlinks, --denylinks\n--help, --addmaster, --delmaster```",
+  "BotAutoRole":  ""
 }
