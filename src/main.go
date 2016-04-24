@@ -25,6 +25,49 @@ import (
 
 
 
+// until i can figure out how to get the roles from every member
+// i have to do the masters system this way (the noob way)
+/*
+func isMaster(server string, user string) bool {
+	mas := true
+
+	var in info
+	vfile, err := ioutil.ReadFile("servers/" + server + "/main.json")
+	if err != nil {
+		// mas = false
+	}
+
+	json.Unmarshal(vfile, &in)
+
+	if _, err := os.Stat("servers/" + server + "/" + user + ".json"); err != nil {
+		mas = false
+	}
+
+	if user == in.Admin {
+		mas = true
+	}
+	return mas
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -187,7 +230,7 @@ if err == nil {
 		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
 		response = strings.Replace(response, "{listen}", strings.Replace(m.Content, trigger, "", -1), -1)
 		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
-
+		
 
 		if strings.HasPrefix(trigger, "&") {
 			isfind = true
@@ -195,10 +238,10 @@ if err == nil {
 			trigger = strings.Replace(trigger, "&", "", -1)
 		}
 
-		if strings.HasPrefix(trigger, in.Prefix) {
+	if strings.HasPrefix(trigger, in.Prefix) {
 	//		fmt.Println("Found: "+in.Prefix)
 			isfind = true
-		}
+	}
 
 	// Let's detect if it was a PM or not.
 	if strings.Contains(response, "{pm}") {
@@ -309,35 +352,35 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 
 
 		if m.Content == in.Prefix + "help "+cmd.AddMaster {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+"addmaster @User\ninfo: gives user acces to mod commands.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+cmd.AddMaster+" @User\ninfo: gives user acces to mod commands.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.DelMaster {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+"delmaster @User\ninfo: removes access to mod commands.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+cmd.DelMaster+" @User\ninfo: removes access to mod commands.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Greet {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"greet Welcome {user} if you need any help ask!\ninfo: use {user} to mention the new member.\nuse {/user} to just say their username!\njust set the message to off for turning the greet message off```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.Greet+" Welcome {user} if you need any help ask!\ninfo: use {user} to mention the new member.\nuse {/user} to just say their username!\njust set the message to off for turning the greet message off```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Bye {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"bye {user} has left the server.\nto turn off set the bye message to off```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.Bye+" {user} has left the server.\nto turn off set the bye message to off```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.DenyLinks {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"denylinks\ninfo: enables my anti link module. by default i kick offenders. you can use setpunish command to change to ban.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.DenyLinks+"\ninfo: enables my anti link module. by default i kick offenders. you can use setpunish command to change to ban.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.AllowLinks {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"allowlinks\ninfo: turns my anti link module off.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.AllowLinks+"\ninfo: turns my anti link module off.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Prefix {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"prefix #\ninfo: sets my prefix in your server to #```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.Prefix+" #\ninfo: sets my prefix in your server to #```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Autorole {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"autorole Role Name\ninfo: automatically assign a role to new members.\nsilently add roles type "+in.Prefix+"autorole -s Role Name```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.Autorole+" Role Name\ninfo: automatically assign a role to new members.\nsilently add roles type "+in.Prefix+"autorole -s Role Name```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Invites {
@@ -349,27 +392,27 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Give {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+"give @User Role Name\ninfo: gives the user the specified role.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+cmd.Give+" @User Role Name\ninfo: gives the user the specified role.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Take {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+"take @User Role Name\ninfo: takes the user the specified role.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+cmd.Take+" @User Role Name\ninfo: takes the user the specified role.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Giveme {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+"giveme Role Name\ninfo: gives you the specified role.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner\nusage: "+in.Prefix+cmd.Giveme+" Role Name\ninfo: gives you the specified role.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.SetPunish {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"setpunish kick or ban\ninfo: you can set the anti links module punishment to either kick or ban. by default its set to kick.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.SetPunish+" kick or ban\ninfo: you can set the anti links module punishment to either kick or ban. by default its set to kick.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Mute {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"mute @User\ninfo: mutes the user. you need to make a role named muted and set the permissions to not speak and than add the role to your channels.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.Mute+" @User\ninfo: mutes the user. you need to make a role named muted and set the permissions to not speak and than add the role to your channels.```")
 		}
 
 		if m.Content == in.Prefix + "help "+cmd.Unmute {
-			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+"unmute @User\ninfo: unmutes the user.```")
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.Unmute+" @User\ninfo: unmutes the user.```")
 		}
 	}
 
@@ -640,7 +683,7 @@ x, err = s.GuildMember(c.GuildID, str)
 	for mr := range x.Roles {
 		t := ms[mr]
 		if strings.Contains(t, roleID) {
-			fmt.Println("Membert has role: "+t)
+	//		fmt.Println("Membert has role: "+t)
     		x.Roles = append(x.Roles[:mr], x.Roles[mr+1:]...)
     		s.GuildMemberEdit(c.GuildID, usr, x.Roles)
 			s.ChannelTyping(m.ChannelID)
@@ -1354,26 +1397,30 @@ if str == "off" {
 
 
 
-
-
+dblchk := isMemberRole(s, c.GuildID, m.Author.ID, "Bot Commander")	// isMemberRole returns true or false
+if m.Author.ID == in.Admin {
+	dblchk = true
+}
 // let's see if they want advertising disabled
 if in.AntiLink == true && in.BotMaster == false {
-	var deny [5]string
-	deny[0] = "https://"
-	deny[1] = "http://"
-	deny[2] = ".com"
-	deny[3] = ".net"
-	deny[4] = "www."
 
-	for i := 0; i <= 4; i++ {
-		if strings.Contains(strings.ToLower(strings.ToLower(m.Content)), deny[i]) && in.Admin != m.Author.ID {
-			s.ChannelMessageDelete(m.ChannelID, m.ID)
-			s.ChannelTyping(m.ChannelID)
-			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, "I have kicked <@" + m.Author.ID + "> For advertising.")
-			s.GuildMemberDelete(c.GuildID, m.Author.ID)
-		}
-	} // end of for loop
+	if dblchk == false {
+		var deny [5]string
+		deny[0] = "https://"
+		deny[1] = "http://"
+		deny[2] = ".com"
+		deny[3] = ".net"
+		deny[4] = "www."
+		for i := 0; i <= 4; i++ {
+			if strings.Contains(strings.ToLower(strings.ToLower(m.Content)), deny[i]) && in.Admin != m.Author.ID {
+				s.ChannelMessageDelete(m.ChannelID, m.ID)
+				s.ChannelTyping(m.ChannelID)
+				time.Sleep(1000 * time.Millisecond)
+				s.ChannelMessageSend(m.ChannelID, "I have kicked <@" + m.Author.ID + "> For advertising.")
+				s.GuildMemberDelete(c.GuildID, m.Author.ID)
+			}
+		} // end of for loop
+	} // end of dbl check
 } // end of anti link system
 
 
