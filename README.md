@@ -1,6 +1,7 @@
 # AutoGo Personal Bot By Proxy
 Utilizes the DiscordGO Library: https://github.com/bwmarrin/discordgo
-
+<br>
+Will be adding more documentation later!!
 <br><br>
 ## HOW TO SETUP:
 First You need to make a bot account by visiting the link below<br>

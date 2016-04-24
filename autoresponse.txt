@@ -1,0 +1,22 @@
+// You can do commenting and leave blank spaces in your auto response text.
+
+
+
+// a basic example
+hey man!-#$-Hey {user} how are you doing today?
+
+// AutoGo will ignore blank lines.
+
+
+
+wtf-#$-Testing the auto response system!
+
+// wtf is the trigger in the above example. If someone says wtf, AutoGo will reply with: Testing the auto response system!
+
+
+// let's test the new keys
+// {listen} to post their content.
+// {user} and {/user} along with {pm}
+hi-#$-{pm}Hey how can i help you?
+hello-#$-Hi {/user} if you need any help just ask!
+&lol-#$-Well it might have worked, who knows?
