@@ -206,9 +206,11 @@ if err == nil {
 
 
 
-
+if m.Author.ID != s.State.User.ID {
  // -#$-
 var auto []string
+var cn int
+cn = 0
 auto, err = readLines("autoresponse.txt")
 if err == nil {
 	for _, ars := range auto {
@@ -233,6 +235,7 @@ if err == nil {
 		
 
 		if strings.HasPrefix(trigger, "&") {
+			cn++
 			isfind = true
 	//		fmt.Println("Found: &")
 			trigger = strings.Replace(trigger, "&", "", -1)
@@ -240,7 +243,7 @@ if err == nil {
 
 	if strings.HasPrefix(trigger, in.Prefix) {
 	//		fmt.Println("Found: "+in.Prefix)
-			isfind = true
+		//	isfind = true
 	}
 
 	// Let's detect if it was a PM or not.
@@ -268,7 +271,7 @@ if err == nil {
 			} // check if it's a pm or a server request.
 		} // end of basic trigger
 
-		if strings.Contains(m.Content, trigger) && isfind == true {
+		if strings.Contains(m.Content, trigger) && isfind == true && cn == 1 {
 	//		fmt.Println("It has worked!")
 			s.ChannelTyping(m.ID)
 			time.Sleep(1000 * time.Millisecond)
@@ -277,7 +280,7 @@ if err == nil {
 		} // end of dont == false
 	} // end of for loop
 } // check to see if they have autoresponse.txt file in bot dir.
-
+}
 
 
 
