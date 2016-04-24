@@ -223,16 +223,46 @@ if err == nil {
 		if ars == "" {
 			dont = true
 		}
+
+
+	if dont == false { // doing this to check for excluded roles
+		ardat := strings.Split(ars, "-#$-")
+		trigger := ardat[0]
+		response := ardat[1]
+		// lets work on excluding roles from triggers.
+		if strings.Contains(response, "{exc=") {
+			newdat := strings.Split(response, "{exc=")
+			newdat = strings.Split(newdat[1], "}")
+			exclude := newdat[0]
+
+			// let's see if it's multiple roles or just one.
+			if strings.Contains(exclude, ",") {
+				for _, vR := range exclude {
+					if isMemberRole(s, c.GuildID, m.Author.ID, vR) == true {
+						dont = true
+					}
+				} // checking for multiple ppl.
+			} else {
+				// only a single role is detected.
+				if isMemberRole(s, c.GuildID, m.Author.ID, exclude) == true {
+					dont = true
+				}
+			} // end of excludes check
+		} // end of excluding roles from triggers
+	} // end of dont == false
+
+
+
+
 		if dont == false {
 	//	fmt.Println("RAW: " + ars)
 		ardat := strings.Split(ars, "-#$-")
 		trigger := ardat[0]
 		response := ardat[1]
-
 		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
-		response = strings.Replace(response, "{listen}", strings.Replace(m.Content, trigger, "", -1), -1)
 		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
 		
+
 
 		if strings.HasPrefix(trigger, "&") {
 			cn++

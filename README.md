@@ -1,14 +1,16 @@
-# AutoGo Personal Bot By Proxy
-Utilizes the DiscordGO Library: https://github.com/bwmarrin/discordgo
-<br>
-Will be adding more documentation later!!
+## You need to pm the bot to gain ownership.
+> Utilizes the DiscordGO Library: https://github.com/bwmarrin/discordgo<Br>
+> AutoGo Written by: Proxy<br>
+> Appmaker written by: bwmarrin<br>
+
+
 <br><br>
-## HOW TO SETUP:
 First You need to make a bot account by visiting the link below<br>
 https://discordapp.com/developers/applications/me<br>
-<br><br>
+<br>
+Or you can use bwmarrin's ```appmaker``` to convert user account to bot account.<br>
+You can also use ```appmaker``` to list/delete/view and add new OAuth applications.<br>
 
-### You need to pm the bot to gain ownership.
 <Br>
 
 ### OPEN CONFIG.JSON AND FOLLOW INSTRUCTIONS BELOW:

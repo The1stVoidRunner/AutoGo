@@ -29,11 +29,11 @@ Usage of ./appmaker:
 
 Account Email and Password or Token are required. The account provided with these fields will be the "owner" of any bot applications created.
 <br>
-If you provide the `-l` flag than appmaker will only display a list of applications on the provided account.
+If you provide the ```-l``` flag than appmaker will only display a list of applications on the provided account.
 <br>
-If you provide a `-d` flag with a valid application ID then that application will be deleted.
+If you provide a ```-d``` flag with a valid application ID then that application will be deleted.
 <br>
-If you provide a `-c` flag with a valid user token then than user account will be converted into a Bot account instead of creating a new Bot account for an application.
+If you provide a ```-c``` flag with a valid user token then than user account will be converted into a Bot account instead of creating a new Bot account for an application.
 <Br><br>
 Below example will create a new Bot Application under the given Email/Password account. The Bot will be named DiscordGoRocks
 <Br>
