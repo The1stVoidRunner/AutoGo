@@ -21,6 +21,37 @@ type obj struct {
 }
 
 
+type responses struct {
+	AddMaster			string
+	DelMaster			string
+	Take				string
+	Give				string
+	Mute				string
+	Unmute				string
+	Greet				string
+	GreetOff			string
+	Bye					string
+	ByeOff				string
+	DenyLinks			string
+	AllowLinks			string
+	Prefix				string
+	SetPunish			string
+	AutoRole			string
+	AutoRoleOff			string
+	NoRole				string
+	BotAutoRole			string
+	AutoBotRoleOff		string
+	AntiLinkKick		string
+	AntiLinkBan			string
+	AntiLinkWarn		string
+	Kick				string
+	Ban					string
+	Status				string
+	Giveme				string
+	BotAutoRoleMsg		string
+	AutoRoleMsg			string
+}
+
 type role struct {
 	ID	string
 }

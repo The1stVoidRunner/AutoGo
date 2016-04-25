@@ -3,9 +3,10 @@
 > AutoGo Written by: Proxy<br>
 > Appmaker written by: bwmarrin<br>
 
-### Coming Soon:
-> Custom Responses to every command.
-> more soon.
+### NEWLY ADDED
+> Custom Responses in **responses.json**<br>
+> Added **{kick}** key in Auto Response System<br>
+> Added **{ban}** key in Auto Response System<br>
 
 <br><br>
 First You need to make a bot account by visiting the link below<br>
@@ -177,6 +178,13 @@ or rename it.
 AutoGo has an Auto Response System! However it's new<br>
 So it's very basic at the moment. if you open autoresponse.txt<br>
 you will get ideas of what you need to do to add an auto response!<br>
+
+<br>
+
+### RESPONSES.JSON
+You can customize what AutoGo says in every command or action.<br>
+There are a few things that aren't customizable. But that's very few!<br>
+Just check out **responses.json** for more info!<br>
 
 <br>
 

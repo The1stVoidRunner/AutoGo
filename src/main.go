@@ -16,7 +16,7 @@ import (
 	var startTime time.Time
 	var js obj
 	var cmd commands
-
+	var resp responses
 
 
 type update struct {
@@ -134,6 +134,15 @@ if chkErr == true {
 	}
 
 
+	// Load up the custom responses.
+	rfile, err := ioutil.ReadFile("responses.json")
+	if err != nil {
+		return
+	} else {
+	json.Unmarshal(rfile, &resp)
+	}
+
+
 
 	// Load up the server information
 	vfile, err := ioutil.ReadFile("config.json")
@@ -222,6 +231,16 @@ if err == nil {
 		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
 		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
 		
+		if strings.Contains(response, "{kick}") {
+			response = strings.Replace(response, "{kick}", "", -1)
+			s.GuildMemberDelete(c.GuildID, m.Author.ID)
+		}
+
+		if strings.Contains(response, "{ban}") {
+			response = strings.Replace(response, "{ban}", "", -1)
+			s.GuildBanCreate(c.GuildID, m.Author.ID, 10)
+		}
+
 
 		cntrole := 0
 		/*
@@ -445,6 +464,10 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 		if m.Content == in.Prefix + "help "+cmd.Unmute {
 			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.Unmute+" @User\ninfo: unmutes the user.```")
 		}
+
+		if m.Content == in.Prefix + "help "+cmd.BotAutoRole {
+			s.ChannelMessageSend(m.ChannelID, "```ruby\npermissions: Server Owner & Bot Commanders\nusage: "+in.Prefix+cmd.BotAutoRole+" Role Name\ninfo: Will give any bot that joins your server a specific role.```")
+		}
 	}
 
 
@@ -603,7 +626,8 @@ z, err = s.GuildMember(c.GuildID, str)
     				s.GuildMemberEdit(c.GuildID, str, z.Roles)
 					s.ChannelTyping(m.ChannelID)
 					time.Sleep(1000 * time.Millisecond)
-					s.ChannelMessageSend(m.ChannelID, "I've added <@" + str + "> as a `Bot Commander`")
+					newdata := strings.Replace(resp.AddMaster, "{user}", "<@"+str+">", -1)
+					s.ChannelMessageSend(m.ChannelID, newdata)
     			}
 			}
 		}
@@ -655,7 +679,8 @@ x, err = s.GuildMember(c.GuildID, str)
     		s.GuildMemberEdit(c.GuildID, str, x.Roles)
 			s.ChannelTyping(m.ChannelID)
 			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, "I've Removed <@" + str + "> from `Bot Commander` position.")
+			newdata := strings.Replace(resp.DelMaster, "{user}", "<@"+str+">", -1)
+			s.ChannelMessageSend(m.ChannelID, newdata)
 		}
 	}
 } // end of Del master command
@@ -720,7 +745,9 @@ x, err = s.GuildMember(c.GuildID, str)
     		s.GuildMemberEdit(c.GuildID, usr, x.Roles)
 			s.ChannelTyping(m.ChannelID)
 			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, "I've taken <@"+usr+">'s role `" + role + "`")
+			newdata := strings.Replace(resp.Take, "{user}", "<@"+usr+">", -1)
+			newdata = strings.Replace(newdata, "{data}", role, -1)
+			s.ChannelMessageSend(m.ChannelID, newdata)
     	}
 	}
 } // end of giveme command.
@@ -774,7 +801,9 @@ if err != nil {
     				s.GuildMemberEdit(c.GuildID, usr, x.Roles)
 					s.ChannelTyping(m.ChannelID)
 					time.Sleep(1000 * time.Millisecond)
-					s.ChannelMessageSend(m.ChannelID, "I've given <@"+usr+"> the role `" + role + "`")
+					newdata := strings.Replace(resp.Give, "{user}", "<@"+usr+">", -1)
+					newdata = strings.Replace(newdata, "{data}", role, -1)
+					s.ChannelMessageSend(m.ChannelID, newdata)
     			}
 			}
 		}
@@ -831,7 +860,9 @@ if err != nil {
     				s.GuildMemberEdit(c.GuildID, str, z.Roles)
 					s.ChannelTyping(c.GuildID)
 					time.Sleep(1000 * time.Millisecond)
-					s.ChannelMessageSend(m.ChannelID, "I've muted <@" + str + "> in <#"+m.ChannelID+">")
+					newdata := strings.Replace(resp.Mute, "{user}", "<@"+str+">", -1)
+					newdata = strings.Replace(newdata, "{data}", "<#"+m.ChannelID+">", -1)
+					s.ChannelMessageSend(m.ChannelID, newdata)
     			}
 			}
 		}
@@ -894,7 +925,8 @@ if err != nil {
     		s.GuildMemberEdit(c.GuildID, usr, x.Roles)
 			s.ChannelTyping(m.ChannelID)
 			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, "I've Unmuted <@"+usr+">")
+			newdata := strings.Replace(resp.Unmute, "{user}", "<@"+usr+">", -1)
+			s.ChannelMessageSend(m.ChannelID, newdata)
 			}
 	}
 } // end of giveme command.
@@ -953,11 +985,12 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Greet) {
 	if str != "off" {
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I have changed the Greet message: ```ruby\n"+str+"```")
+			newdata := strings.Replace(resp.Greet, "{data}", str, -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 	} else {
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I have turned the Greet message `off` ")		
+		s.ChannelMessageSend(m.ChannelID, resp.GreetOff)		
 	}
 }
 
@@ -1007,11 +1040,12 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 	if str != "off" {
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I have changed the Bye message: ```ruby\n"+str+"```")
+		newdata := strings.Replace(resp.Bye, "{data}", str, -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 	} else {
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I have turned the Bye message `off`")	
+		s.ChannelMessageSend(m.ChannelID, resp.ByeOff)	
 	}
 }
 
@@ -1097,7 +1131,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "Links are no longer allowed on this server.")
+		s.ChannelMessageSend(m.ChannelID, resp.DenyLinks)
 		return
 	}
 
@@ -1149,7 +1183,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "Links are allowed on this server.")
+		s.ChannelMessageSend(m.ChannelID, resp.AllowLinks)
 		return
 	}
 
@@ -1199,7 +1233,8 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I have changed this servers prefix to `"+str+"`")
+		newdata := strings.Replace(resp.Prefix, "{data}", str, -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 		return
 	}
 
@@ -1234,7 +1269,9 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		if strings.ToLower(str) == "ban" {
 			check = true
 		}
-
+		if strings.ToLower(str) == "warn" {
+			check = true
+		}
 		if check == true {
 			newjs := obj{
 		Bot:			in.Bot,
@@ -1260,12 +1297,13 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 			}
 			s.ChannelTyping(m.ChannelID)
 			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, "I have changed the Antilink punishment to `"+str+"`")
+			newdata := strings.Replace(resp.SetPunish, "{data}", str, -1)
+			s.ChannelMessageSend(m.ChannelID, newdata)
 		}
 		if check == false {
 			s.ChannelTyping(m.ChannelID)
 			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, "You need to pick a proper punishment for Anti links type `"+in.Prefix+"setpunish kick` or `"+in.Prefix+"setpunish ban`")
+			s.ChannelMessageSend(m.ChannelID, "You need to pick a proper punishment for Anti links type `"+in.Prefix+cmd.SetPunish+" kick` or `"+in.Prefix+cmd.SetPunish+" ban` or `"+in.Prefix+cmd.SetPunish+" warn`")
 		}
 		return
 	}
@@ -1332,7 +1370,8 @@ if str != "off" {
 		}
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "New people will get the role `"+str+"`")
+		newdata := strings.Replace(resp.AutoRole, "{data}", str, -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 		return
 	}
 }
@@ -1365,7 +1404,7 @@ if str == "off" {
 		}
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "Autorole => `Disabled`")
+		s.ChannelMessageSend(m.ChannelID, resp.AutoRoleOff)
 }
 
 
@@ -1374,7 +1413,8 @@ if str == "off" {
 	if cnt == 0 {
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I can't find the role `"+str+"` make sure to check spelling, this is case sensitive.")
+		newdata := strings.Replace(resp.NoRole, "{data}", str, -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 	}
 }
 
@@ -1446,7 +1486,8 @@ if str != "off" {
 		}
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "New bots will get the role `"+str+"`")
+		newdata := strings.Replace(resp.BotAutoRole, "{data}", str, -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 		return
 	}
 }
@@ -1479,7 +1520,7 @@ if str == "off" {
 		}
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "Bot Autorole => `Disabled`")
+		s.ChannelMessageSend(m.ChannelID, resp.AutoBotRoleOff)
 }
 
 
@@ -1488,7 +1529,8 @@ if str == "off" {
 	if cnt == 0 {
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I can't find the role `"+str+"` make sure to check spelling, this is case sensitive.")
+		newdata := strings.Replace(resp.NoRole, "{data}", str, -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 	}
 }
 
@@ -1569,8 +1611,25 @@ if in.AntiLink == true && in.BotMaster == false {
 				s.ChannelMessageDelete(m.ChannelID, m.ID)
 				s.ChannelTyping(m.ChannelID)
 				time.Sleep(1000 * time.Millisecond)
-				s.ChannelMessageSend(m.ChannelID, "I have kicked <@" + m.Author.ID + "> For advertising.")
-				s.GuildMemberDelete(c.GuildID, m.Author.ID)
+				if in.Action == "kick" {
+					newkick := strings.Replace(resp.AntiLinkKick, "{data}", "<@"+m.Author.ID+">", -1)
+					s.ChannelMessageSend(m.ChannelID, newkick)
+					s.GuildMemberDelete(c.GuildID, m.Author.ID)
+				} // if they want a kick
+
+				if in.Action == "ban" {
+					newban := strings.Replace(resp.AntiLinkBan, "{data}", "<@"+m.Author.ID+">", -1)
+					s.ChannelMessageSend(m.ChannelID, newban)
+					s.GuildBanCreate(c.GuildID, m.Author.ID, 10)
+				} // if they want a kick
+
+				if in.Action == "warn" {
+					newwarn := strings.Replace(resp.AntiLinkWarn, "{data}", "<@"+m.Author.ID+">", -1)
+					s.ChannelMessageSend(m.ChannelID, newwarn)
+					// s.GuildBanCreate(c.GuildID, m.Author.ID, 10)
+				} // if they want a kick
+
+
 			}
 		} // end of for loop
 	} // end of dbl check
@@ -1658,7 +1717,8 @@ if strings.Contains(strings.ToLower(m.Content), "--avatar") && in.Admin == m.Aut
 		// fmt.Println("the"+str+"string")
 		s.ChannelTyping(m.ID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I have kicked <@" + str + "> From the server.")
+		newdata := strings.Replace(resp.Kick, "{data}", "<@"+str+">", -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 		s.GuildMemberDelete(c.GuildID, str)
 	}
 
@@ -1676,7 +1736,8 @@ if strings.Contains(strings.ToLower(m.Content), "--avatar") && in.Admin == m.Aut
 		str = strings.Replace(str, ">", "", -1)
 		s.ChannelTyping(m.ID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "I have banned <@" + str + "> From the server.")
+		newdata := strings.Replace(resp.Ban, "{data}", "<@"+str+">", -1)
+		s.ChannelMessageSend(m.ChannelID, newdata)
 		s.GuildBanCreate(c.GuildID, str, 10)
 	}
 
@@ -1694,7 +1755,7 @@ if strings.Contains(strings.ToLower(m.Content), "--avatar") && in.Admin == m.Aut
 		str := strings.Replace(m.Content, in.Prefix + "status ", "", -1)
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
-		s.ChannelMessageSend(m.ChannelID, "Attempting status change.")
+		s.ChannelMessageSend(m.ChannelID, resp.Status)
 		s.UpdateStatus(0, str)
 		time.Sleep(500 * time.Millisecond)
 		s.UpdateStatus(0, str)
@@ -1722,7 +1783,8 @@ return
     				s.GuildMemberEdit(c.GuildID, m.Author.ID, z.Roles)
 					s.ChannelTyping(c.GuildID)
 					time.Sleep(1000 * time.Millisecond)
-					s.ChannelMessageSend(c.GuildID, "You have assumed the role `" + str + "`")
+					newdata := strings.Replace(resp.Giveme, "{data}", "<@"+str+">", -1)
+					s.ChannelMessageSend(c.GuildID, newdata)
     			}
 			}
 		}
@@ -1790,8 +1852,21 @@ s.ChannelMessageSend(k.ID, "You have sucessfully installed `AutoGo` check out `c
 func GuildMemberAdd(s *discordgo.Session, m *discordgo.GuildMemberAdd) {
 
 	var in obj
+	var resp responses
+
 	vfile, err := ioutil.ReadFile("config.json")
 	json.Unmarshal(vfile, &in)
+
+
+	// Load up the custom responses.
+	rfile, err := ioutil.ReadFile("responses.json")
+	if err != nil {
+		return
+	} else {
+	json.Unmarshal(rfile, &resp)
+	}
+
+
 
 	// fmt.Println(in.RoleSys)
 	roles, err := s.GuildRoles(m.GuildID)
@@ -1813,7 +1888,9 @@ if m.User.Bot == false {
     				m.Roles = append(m.Roles, v.ID)
     				s.GuildMemberEdit(m.GuildID, m.User.ID, m.Roles)
     				if in.Silent == false {
-						s.ChannelMessageSend(m.GuildID, "I have given <@"+m.User.ID+"> The role `"+in.RoleSys+"`")
+    					newdata := strings.Replace(resp.AutoRoleMsg, "{data}", in.RoleSys, -1)
+    					newdata = strings.Replace(newdata, "{user}", "<@"+m.User.ID+">", -1)
+						s.ChannelMessageSend(m.GuildID, newdata)
 					}
 				}
     		}
@@ -1831,7 +1908,9 @@ if m.User.Bot == true {
     				m.Roles = append(m.Roles, v.ID)
     				s.GuildMemberEdit(m.GuildID, m.User.ID, m.Roles)
     				if in.Silent == false {
-						s.ChannelMessageSend(m.GuildID, "**A bot has been detected.** I've given <@"+m.User.ID+"> the role `"+in.BotAutoRole+"`")
+    					newdata := strings.Replace(resp.BotAutoRoleMsg, "{data}", in.RoleSys, -1)
+    					newdata = strings.Replace(newdata, "{user}", "<@"+m.User.ID+">", -1)
+						s.ChannelMessageSend(m.GuildID, newdata)
 					}
 				}
     		}
