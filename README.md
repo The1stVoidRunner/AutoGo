@@ -26,7 +26,7 @@ Replace "YOUR-BOT-TOKEN-HERE" with your bot's token.<br>
 <Br>
 
 ### STATUS
-From there you can set his startup status.<br>
+This allows you to set his startup status.<br>
 You can later change this using --status command.<br>
 
 <br>
@@ -60,7 +60,7 @@ Using the command will alert you if the role exists or not.<br>
 
 ### ACTION
 You can change this manually or via command --setpunish<br>
-There are two options: kick or ban.<br>
+There are three options: **kick**, **ban** and **warn**.<br>
 This set's the punishment for the Anti Link System. Default = kick<br>
 
 <br>

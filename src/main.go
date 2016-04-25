@@ -231,6 +231,7 @@ if err == nil {
 		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
 		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
 		
+	if in.BotMaster == false { 
 		if strings.Contains(response, "{kick}") {
 			response = strings.Replace(response, "{kick}", "", -1)
 			s.GuildMemberDelete(c.GuildID, m.Author.ID)
@@ -240,7 +241,7 @@ if err == nil {
 			response = strings.Replace(response, "{ban}", "", -1)
 			s.GuildBanCreate(c.GuildID, m.Author.ID, 10)
 		}
-
+	}
 
 		cntrole := 0
 		/*
@@ -396,8 +397,10 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 
 	//		fmt.Println("Converted: " + i)
 	//		fmt.Println(in.CmdsRun)
-		
-		s.ChannelMessageSend(m.ChannelID, in.HelpCmd)
+			newdata := strings.Replace(in.HelpCmd, "{cmdsrun}", i, -1)
+			newdata = strings.Replace(newdata, "{ismaster}", bm, -1)
+
+		s.ChannelMessageSend(m.ChannelID, newdata)
 		}
 
 
@@ -726,29 +729,27 @@ if err == nil {
   }
 
 
-x, err := s.State.Member(c.GuildID, str) 
-if err != nil {
-x, err = s.GuildMember(c.GuildID, str)
-}
-
+x, err := s.GuildMember(c.GuildID, usr)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	var ms []string
-	ms = x.Roles
-	for mr := range x.Roles {
-		t := ms[mr]
-		if strings.Contains(t, roleID) {
-	//		fmt.Println("Membert has role: "+t)
-    		x.Roles = append(x.Roles[:mr], x.Roles[mr+1:]...)
-    		s.GuildMemberEdit(c.GuildID, usr, x.Roles)
-			s.ChannelTyping(m.ChannelID)
-			time.Sleep(1000 * time.Millisecond)
-			newdata := strings.Replace(resp.Take, "{user}", "<@"+usr+">", -1)
-			newdata = strings.Replace(newdata, "{data}", role, -1)
-			s.ChannelMessageSend(m.ChannelID, newdata)
-    	}
+	if err == nil {
+		var ms []string
+		ms = x.Roles
+		for mr := range x.Roles {
+			t := ms[mr]
+			if strings.Contains(t, roleID) {
+				//fmt.Println("Membert has role: "+t)
+    			x.Roles = append(x.Roles[:mr], x.Roles[mr+1:]...)
+    			s.GuildMemberEdit(c.GuildID, usr, x.Roles)
+				s.ChannelTyping(m.ChannelID)
+				time.Sleep(1000 * time.Millisecond)
+				newdata := strings.Replace(resp.Take, "{user}", "<@"+usr+">", -1)
+				newdata = strings.Replace(newdata, "{data}", role, -1)
+				s.ChannelMessageSend(m.ChannelID, newdata)
+    		}
+		}
 	}
 } // end of giveme command.
 

@@ -3,20 +3,36 @@
 
 
 // a basic example
-hey man!-#$-Hey {user} how are you doing today?
+hey man!=Hey {user} how are you doing today?
 
 // AutoGo will ignore blank lines.
 
 
 
-wtf-#$-Testing the auto response system!
-
+wtf=Testing the auto response system!
 // wtf is the trigger in the above example. If someone says wtf, AutoGo will reply with: Testing the auto response system!
 
 
-// let's test the new keys
-// {listen} to post their content.
-// {user} and {/user} along with {pm}
-hi-#$-{pm}Hey how can i help you?
-hello-#$-Hi {/user} if you need any help just ask!
-&lol-#$-Well it might have worked, who knows?
+
+
+hi={pm}Hey how can i help you?
+hello=Hi {/user} if you need any help just ask!
+
+
+// Let's setup a word filter to kick/ban someone.
+&faggot={kick}I have kicked {user} for being dumb.
+&fuck={ban}I have banned {user} for swearing.
+
+
+
+
+// using & will search for that text in someones message. if it finds the word AutoGo will respond.
+// example if someone says: what man? lol below will trigger
+&lol=Well it might have worked, who knows?
+
+
+// let's exclude any member who has Bot Commander role from triggering the response below.
+&testsingle={exc=Bot Commander}Yo did this work?
+
+// Ecluding mutiple roles is currently broken.
+&testmulti={exc=Bot Commander,Members}Testing this shit!
