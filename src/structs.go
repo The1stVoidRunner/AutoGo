@@ -54,7 +54,13 @@ type responses struct {
 }
 
 type role struct {
-	ID	string
+	ID			string
+	Name		string
+	Managed		bool
+	Hoist		bool
+	Color		int
+	Position	int
+	Permissions	int
 }
 
 

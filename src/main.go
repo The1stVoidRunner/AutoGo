@@ -129,7 +129,7 @@ if chkErr == true {
 
 
 	// Load up the custom commands.
-	cfile, err := ioutil.ReadFile("commands.json")
+	cfile, err := ioutil.ReadFile("System/custom/commands.json")
 	if err != nil {
 		return
 	} else {
@@ -138,7 +138,7 @@ if chkErr == true {
 
 
 	// Load up the custom responses.
-	rfile, err := ioutil.ReadFile("responses.json")
+	rfile, err := ioutil.ReadFile("System/custom/responses.json")
 	if err != nil {
 		return
 	} else {
@@ -203,135 +203,10 @@ if err == nil {
 
 
 
-
-
-if m.Author.ID != s.State.User.ID {
- // -#$-
-var auto []string
-var cn int
-cn = 0
-auto, err = readLines("autoresponse.txt")
-if err == nil {
-	for _, ars := range auto {
-		dont := false
-		ispm := false
-		isfind := false
-		if strings.HasPrefix(ars, "//") {
-			dont = true
-		}
-		if ars == "" {
-			dont = true
-		}
-
-
-
-		if dont == false && strings.Contains(ars, "=") {
-	//	fmt.Println("RAW: " + ars)
-		ardat := strings.Split(ars, "=")
-		trigger := ardat[0]
-		response := strings.Replace(ars, trigger+"=", "", -1)
-	//	response := ardat[1]
-		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
-		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
-		
-	if in.BotMaster == false { 
-		if strings.Contains(response, "{kick}") {
-			response = strings.Replace(response, "{kick}", "", -1)
-			s.GuildMemberDelete(c.GuildID, m.Author.ID)
-		}
-
-		if strings.Contains(response, "{ban}") {
-			response = strings.Replace(response, "{ban}", "", -1)
-			s.GuildBanCreate(c.GuildID, m.Author.ID, 10)
-		}
-	}
-
-		cntrole := 0
-		/*
-		// lets work on excluding roles from triggers.
-		if strings.Contains(response, "{exc=") {
-			newdat := strings.Split(response, "{exc=")
-			newdat = strings.Split(newdat[1], "}")
-			exclude := newdat[0]
-			// let's see if it's multiple roles or just one.
-			if strings.Contains(exclude, ",") {
-				excluded := strings.Split(exclude, ",")
-				for _, vR := range excluded {
-					if isMemberRole(s, c.GuildID, m.Author.ID, vR) == true {
-						fmt.Println("Found the role "+vR)
-						response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
-						cntrole++
-					}
-				} // checking for multiple ppl.
-			} else {
-				// only a single role is detected.
-				if isMemberRole(s, c.GuildID, m.Author.ID, exclude) == true {
-					fmt.Println("Found the single role: "+exclude)
-					response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
-					cntrole++
-				}
-			} // end of excludes check
-		} // end of excluding roles from triggers
-		*/
-
-
-
-
-		if strings.HasPrefix(trigger, "&") {
-			cn++
-			isfind = true
-	//		fmt.Println("Found: &")
-			trigger = strings.Replace(trigger, "&", "", -1)
-		}
-
-	if strings.HasPrefix(trigger, in.Prefix) {
-	//		fmt.Println("Found: "+in.Prefix)
-		//	isfind = true
-	}
-
-	// Let's detect if it was a PM or not.
-	if strings.Contains(response, "{pm}") {
-		response = strings.Replace(response, "{pm}", "", -1)
-		ispm = true
-	}
-
-	if strings.Contains(response, ":br") {
-		response = strings.Replace(response, ":br", "\n", -1)
-	}
-	if cntrole == 0 {
-	//	fmt.Println("Trigger: " + trigger)
-	//	fmt.Println("Response: " + response)
-		// just a basic ARS trigger. Later i will code for {find=word}
-		if m.Content == trigger {
-			if ispm == false {
-				s.ChannelTyping(m.ID)
-				time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, response)
-			} else {
-				k, err := s.UserChannelCreate(m.Author.ID)
-				if err == nil {
-					s.ChannelTyping(k.ID)
-					time.Sleep(1000 * time.Millisecond)
-					s.ChannelMessageSend(k.ID, response)
-				}
-			} // check if it's a pm or a server request.
-		} // end of basic trigger
-
-		if strings.Contains(m.Content, trigger) && isfind == true && cn == 1 {
-	//		fmt.Println("It has worked!")
-			s.ChannelTyping(m.ID)
-			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, response)				
-		}
-		} // end of cntrole == 0
-		} // end of dont == false
-	} // end of for loop
-} // check to see if they have autoresponse.txt file in bot dir.
+ar1 := AutoResponseSystem(c.GuildID, in.BotMaster, in.Prefix, s, m)
+if ar1 != "" {
+	s.ChannelMessageSend(m.ChannelID, ar1)
 }
-
-
-
-
 
 
 
@@ -356,7 +231,7 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 		}
-	b, err := json.Marshal(newConf)
+	b, err := json.MarshalIndent(newConf, "", "   ")
 	if err == nil {
 		ioutil.WriteFile("config.json", b, 0777)
 	}
@@ -570,9 +445,9 @@ if in.Admin == m.Author.ID && strings.HasPrefix(m.Content, in.Prefix + "rename")
 		Unmute:			cmd.Unmute,
 		BotAutoRole:	cmd.BotAutoRole,
 	}
-	b, err := json.Marshal(newConf)
+	b, err := json.MarshalIndent(newConf, "", "   ")
 	if err == nil {
-		ioutil.WriteFile("commands.json", b, 0777)
+		ioutil.WriteFile("System/custom/commands.json", b, 0777)
 		s.ChannelTyping(m.ChannelID)
 		time.Sleep(1000 * time.Millisecond)
 		s.ChannelMessageSend(m.ChannelID, "I've renamed the command `"+Before+"` to `"+After+"`")
@@ -1057,7 +932,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Greet) {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 			}
-			b, err := json.Marshal(newjs)
+			b, err := json.MarshalIndent(newjs, "", "   ")
 			if err == nil {
 				ioutil.WriteFile("config.json", b, 0777)
 			}
@@ -1112,7 +987,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 	}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1203,7 +1078,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 		}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1255,7 +1130,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 		}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1305,7 +1180,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 		}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1370,7 +1245,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 			}
-			b, err := json.Marshal(newjs)
+			b, err := json.MarshalIndent(newjs, "", "   ")
 			if err == nil {
 				ioutil.WriteFile("config.json", b, 0777)
 			}
@@ -1443,7 +1318,7 @@ if str != "off" {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 			}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1477,7 +1352,7 @@ if str == "off" {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
 			}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1559,7 +1434,7 @@ if str != "off" {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	str,
 			}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1593,7 +1468,7 @@ if str == "off" {
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	"off",
 			}
-		b, err := json.Marshal(newjs)
+		b, err := json.MarshalIndent(newjs, "", "   ")
 		if err == nil {
 			ioutil.WriteFile("config.json", b, 0777)
 		}
@@ -1899,8 +1774,9 @@ if c.GuildID == "" && in.Admin == "" {
 		Action:			in.Action,
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
+		BotAutoRole:	in.BotAutoRole,
 		}
-	b, err := json.Marshal(newConf)
+	b, err := json.MarshalIndent(newConf, "", "   ")
 	if err == nil {
 		ioutil.WriteFile("config.json", b, 0777)
 	}
@@ -1914,8 +1790,151 @@ s.ChannelMessageSend(k.ID, "You have sucessfully installed `AutoGo` check out `c
 
 
 
-} // end of chkErr
 
+
+
+
+
+/*
+if m.Author.ID != s.State.User.ID {
+ // -#$-
+var auto []string
+var cn int
+cn = 0
+auto, err = readLines("autoresponse.txt")
+if err == nil {
+	for _, ars := range auto {
+		dont := false
+		ispm := false
+		isfind := false
+		if strings.HasPrefix(ars, "//") {
+			dont = true
+		}
+		if ars == "" {
+			dont = true
+		}
+
+
+
+		if dont == false && strings.Contains(ars, "=") {
+			dokick := bool
+			doban := bool
+	//	fmt.Println("RAW: " + ars)
+		ardat := strings.Split(ars, "=")
+		trigger := ardat[0]
+		response := strings.Replace(ars, trigger+"=", "", -1)
+	//	response := ardat[1]
+		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
+		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
+		
+		cntrole := 0
+	*/
+		/*
+		// lets work on excluding roles from triggers.
+		if strings.Contains(response, "{exc=") {
+			newdat := strings.Split(response, "{exc=")
+			newdat = strings.Split(newdat[1], "}")
+			exclude := newdat[0]
+			// let's see if it's multiple roles or just one.
+			if strings.Contains(exclude, ",") {
+				excluded := strings.Split(exclude, ",")
+				for _, vR := range excluded {
+					if isMemberRole(s, c.GuildID, m.Author.ID, vR) == true {
+						fmt.Println("Found the role "+vR)
+						response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
+						cntrole++
+					}
+				} // checking for multiple ppl.
+			} else {
+				// only a single role is detected.
+				if isMemberRole(s, c.GuildID, m.Author.ID, exclude) == true {
+					fmt.Println("Found the single role: "+exclude)
+					response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
+					cntrole++
+				}
+			} // end of excludes check
+		} // end of excluding roles from triggers
+		*/
+/*
+	if in.BotMaster == false { 
+		if strings.Contains(response, "{kick}") {
+			dokick = true
+		}
+
+		if strings.Contains(response, "{ban}") {
+			doban = true
+		}
+	}
+
+
+		if strings.HasPrefix(trigger, "&") {
+			cn++
+			isfind = true
+	//		fmt.Println("Found: &")
+			trigger = strings.Replace(trigger, "&", "", -1)
+		}
+
+	if strings.HasPrefix(trigger, in.Prefix) {
+	//		fmt.Println("Found: "+in.Prefix)
+		//	isfind = true
+	}
+
+	// Let's detect if it was a PM or not.
+	if strings.Contains(response, "{pm}") {
+		response = strings.Replace(response, "{pm}", "", -1)
+		ispm = true
+	}
+
+	if strings.Contains(response, ":br") {
+		response = strings.Replace(response, ":br", "\n", -1)
+	}
+	if cntrole == 0 {
+	//	fmt.Println("Trigger: " + trigger)
+	//	fmt.Println("Response: " + response)
+		// just a basic ARS trigger. Later i will code for {find=word}
+		if m.Content == trigger {
+			if ispm == false {
+				s.ChannelTyping(m.ID)
+				time.Sleep(1000 * time.Millisecond)
+			s.ChannelMessageSend(m.ChannelID, response)
+			} else {
+				k, err := s.UserChannelCreate(m.Author.ID)
+				if err == nil {
+					s.ChannelTyping(k.ID)
+					time.Sleep(1000 * time.Millisecond)
+					s.ChannelMessageSend(k.ID, response)
+				}
+			} // check if it's a pm or a server request.
+		} // end of basic trigger
+
+		if strings.Contains(m.Content, trigger) && isfind == true && cn == 1 {
+	//		fmt.Println("It has worked!")
+			s.ChannelTyping(m.ID)
+			time.Sleep(1000 * time.Millisecond)
+			s.ChannelMessageSend(m.ChannelID, response)				
+		}
+		} // end of cntrole == 0
+		if dokick == true {
+			response = strings.Replace(response, "{kick}", "", -1)
+			s.GuildMemberDelete(c.GuildID, m.Author.ID)
+		}
+
+		if doban == true {
+			response = strings.Replace(response, "{ban}", "", -1)
+			s.GuildBanCreate(c.GuildID, m.Author.ID, 10)
+		}
+
+		} // end of dont == false
+	} // end of for loop
+} // check to see if they have autoresponse.txt file in bot dir.
+}
+*/
+
+
+
+
+
+} // end of chkErr
 
 } // ##########   END OF messageCreate
 
@@ -1938,7 +1957,7 @@ func GuildMemberAdd(s *discordgo.Session, m *discordgo.GuildMemberAdd) {
 
 
 	// Load up the custom responses.
-	rfile, err := ioutil.ReadFile("responses.json")
+	rfile, err := ioutil.ReadFile("System/custom/responses.json")
 	if err != nil {
 		return
 	} else {
