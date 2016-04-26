@@ -18,5 +18,6 @@
 	"Giveme":"giveme",
 	"Mute":"mute",
 	"Unmute":"unmute",
-	"BotAutoRole":"botrole"
+	"BotAutoRole":"botrole",
+	"Rolecolor":"rolecolor"
 }

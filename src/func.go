@@ -29,6 +29,32 @@ func random(min, max int) int {
 
 
 
+func guildInfo(param string, s *discordgo.Session) (string, error) {
+  var opt string
+  guilds, err := s.UserGuilds()
+    if err != nil {
+      return opt, err
+    }
+   if err == nil {
+
+    // name param was triggered.
+    if strings.ToLower(param) == "name" {
+      opt = guilds[0].ID
+    }
+
+    // ID param was triggered
+    if strings.ToLower(param) == "id" {
+      opt = guilds[0].Name
+    }
+
+
+   }
+   return opt, err
+}
+
+
+
+
 
 
 

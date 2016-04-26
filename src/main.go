@@ -84,12 +84,15 @@ func main() {
 	dg.AddHandler(onReady)
 	// dg.AddHandler(GuildRoleUpdate)
 	// Open the websocket and begin listening.
+	// dg.Debug = true
+
 	dg.Open()
 
 	// Simple way to keep program running until any key press.
 	var input string
 	fmt.Scanln(&input)
 	return
+
 }
 
 
@@ -601,6 +604,61 @@ if in.Admin == m.Author.ID && strings.HasPrefix(m.Content, in.Prefix + "rename")
 
 
 
+if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Rolecolor) {
+str := strings.Replace(m.Content, in.Prefix + cmd.Rolecolor + " ", "", -1)
+var roleID string
+var hoist bool
+var perms int
+
+newdata := strings.Split(str, " ")
+color := newdata[0]
+role := strings.Replace(str, color + " ", "", -1)
+color = strings.Replace(color, "#", "", -1)
+
+// newcolor := strconv.FormatInt(h, 16)
+fmt.Println(role)
+  roles, err := s.GuildRoles(c.GuildID)
+  if err == nil {
+    for _, v := range roles {
+      if v.Name == role {
+       roleID = v.ID
+       hoist = v.Hoist
+       perms = v.Permissions
+      }
+    }
+  } else {
+  	fmt.Println("s.GuildRoles is the error")
+  }
+
+var ij int
+newcode, _ := strconv.ParseInt(color, 16, 0)
+d := fmt.Sprintf("%d", newcode)
+fmt.Println(d)
+ij, err = strconv.Atoi(d)
+if err != nil {
+	fmt.Println(err)
+}
+// if roleID != "" {
+// roleID := GetRoleID(s, c.GuildID, role)
+_, err = s.GuildRoleEdit(c.GuildID, roleID, role, ij, hoist, perms)
+if err != nil {
+  	fmt.Println("s.GuildRoles is the error")
+  }
+newresp := strings.Replace(resp.Rolecolor, "{data}", color, -1)
+s.ChannelMessageSend(m.ChannelID, newresp)
+// }
+} // end of role color
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -612,10 +670,8 @@ str := strings.Replace(m.Content, in.Prefix + cmd.AddMaster+" ", "", -1)
 str = strings.Replace(str, "<@", "", -1)
 str = strings.Replace(str, ">", "", -1)
 
-z, err := s.State.Member(c.GuildID, str) 
-if err != nil {
-z, err = s.GuildMember(c.GuildID, str)
-}
+z, err := s.GuildMember(c.GuildID, str) 
+
 	
 	if err != nil {
 		fmt.Println(err)
@@ -643,6 +699,30 @@ z, err = s.GuildMember(c.GuildID, str)
 
 
 
+/*
+if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.EditChannel) {
+	str := strings.Replace(m.Content, in.Prefix + cmd.EditChannel + " ", "", -1)
+
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -660,10 +740,8 @@ str := strings.Replace(m.Content, in.Prefix + cmd.DelMaster+" ", "", -1)
 str = strings.Replace(str, "<@", "", -1)
 str = strings.Replace(str, ">", "", -1)
 
-x, err := s.State.Member(c.GuildID, str) 
-if err != nil {
-x, err = s.GuildMember(c.GuildID, str)
-}
+x, err := s.GuildMember(c.GuildID, str) 
+
 
 	if err != nil {
 		fmt.Println(err)
@@ -1075,7 +1153,7 @@ if in.BotMaster == true && strings.HasPrefix(m.Content, in.Prefix + cmd.Bye) {
 			MaxAge:		0,
 			MaxUses:	0,
 			Temporary:	false,
-			XkcdPass:	false,
+			XkcdPass:	"",
 		}
 	iv, err := s.ChannelInviteCreate(m.ChannelID, b)
 	if err != nil {
@@ -1973,7 +2051,7 @@ func onReady(s *discordgo.Session, event *discordgo.Ready) {
 		json.Unmarshal(vfile, &in)
 	}
 
-	s.UpdateStatus(0, in.Status)
+s.UpdateStatus(0, in.Status)
 }
 
 

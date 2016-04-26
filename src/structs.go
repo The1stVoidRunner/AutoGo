@@ -50,6 +50,7 @@ type responses struct {
 	Giveme				string
 	BotAutoRoleMsg		string
 	AutoRoleMsg			string
+	Rolecolor			string
 }
 
 type role struct {
@@ -61,7 +62,7 @@ type invite struct {
 	MaxAge		int
 	MaxUses		int
 	Temporary	bool
-	XkcdPass	bool
+	XkcdPass	string
 }
 
 
@@ -86,4 +87,5 @@ type commands struct {
 	Mute			string
 	Unmute			string
 	BotAutoRole		string
+	Rolecolor		string
 }

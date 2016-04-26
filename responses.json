@@ -26,5 +26,6 @@
 	"Status":				"Attempting status change.",
 	"Giveme":				"you've assumed the role `{data}`",
 	"AutoRoleMsg":			"I have given {user} the role `{data}`",
-	"BotAutoRoleMsg":		"**bot detected** I have given {user} `{data}`"
+	"BotAutoRoleMsg":		"**bot detected** I have given {user} `{data}`",
+	"Rolecolor":			"I have changed the role color to `{data}`"
 }
