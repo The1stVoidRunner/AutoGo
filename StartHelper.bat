@@ -36,7 +36,7 @@ helper.exe -upd2
 helper.exe -upd3
 GOTO MENU
 
-:upd64
+:upd32
 cd System/helper
 helper32.exe -upd1
 helper32.exe -upd2
