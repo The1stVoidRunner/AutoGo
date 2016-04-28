@@ -25,8 +25,8 @@
  3. Third step - CHECK PERMISSIONS!  
 4. **helper.exe**  
  1. [Auto Role Theme Changer](https://github.com/proxikal/AutoGo/wiki/Auto-Role-Color)  
- 2. Auto Updating  
- 3. Renaming Roles  
+ 2. [Auto Updating](https://github.com/proxikal/AutoGo/wiki/Auto-Updater)  
+ 3. [Renaming Roles](https://github.com/proxikal/AutoGo/wiki/Renaming-Roles)  
 5. **Enjoy!**
   
   
