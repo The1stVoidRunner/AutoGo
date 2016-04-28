@@ -20,8 +20,8 @@ hello=Hi {/user} if you need any help just ask!
 
 
 // Let's setup a word filter to kick/ban someone.
-&faggot={kick}I have kicked {user} for being dumb.
-&fuck={ban}I have banned {user} for swearing.
+// &faggot={kick}I have kicked {user} for being dumb.
+// &fuck={ban}I have banned {user} for swearing.
 
 
 
