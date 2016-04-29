@@ -5,7 +5,11 @@
 > Appmaker written by: bwmarrin  
   
   
-
+> **Updates:**  
+Removed the {kick} and {ban} key from the auto response  
+will re-code a working version soon.  
+  
+  
 1. **Let's Get Started!**  
  1. [Editing config.json](https://github.com/proxikal/AutoGo/wiki/Editing-config.json)  
  2. [Editing commands.json](https://github.com/proxikal/AutoGo/wiki/Editing-commands.json)  

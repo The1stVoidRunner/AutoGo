@@ -19,5 +19,8 @@
 	"Mute":"mute",
 	"Unmute":"unmute",
 	"BotAutoRole":"botrole",
-	"Rolecolor":"rolecolor"
+	"Rolecolor":"rolecolor",
+	"Cats":"cats",
+	"Giphy":"giphy",
+	"Locateip":"locateip"
 }

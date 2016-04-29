@@ -1,6 +1,6 @@
 {
 	"AddMaster":			"I've added {user} to `Bot Commander`",
-	"DelMaster":			"I've removed {user} to `Bot Commander`",
+	"DelMaster":			"I've removed {user} from `Bot Commander`",
 	"Take":					"I've taken {user}'s role `{data}`",
 	"Give":					"I've given `{data}` to {user}",
 	"Mute":					"I've muted {user} in {data}",
@@ -27,5 +27,8 @@
 	"Giveme":				"you've assumed the role `{data}`",
 	"AutoRoleMsg":			"I have given {user} the role `{data}`",
 	"BotAutoRoleMsg":		"**bot detected** I have given {user} `{data}`",
-	"Rolecolor":			"I have changed the role color to `{data}`"
+	"Rolecolor":			"I have changed the role color to `{data}`",
+	"Cats":					"{data}",
+	"Giphy":				"{data}",
+	"Locateip":				"```ruby\nip: {ip}\ncountry: {country}\nregion: {region}\ncity: {city}\nzipcode: {zip}\ntimezone: {timezone}\nisp: {isp}\n{who}```"
 }
