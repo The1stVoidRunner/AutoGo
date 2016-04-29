@@ -85,17 +85,36 @@ func main() {
 
 
 
-	fmt.Println("→ AutoGo 1.7.5:: Checking for updates.")
 
 	var onl map[string]interface{}
-
 	getJson("https://raw.githubusercontent.com/proxikal/AutoGo/master/config.json", &onl)
+	rawonline := strings.Replace(onl["Version"].(string), ".", "", -1)
 
-	myversion, err := strconv.Atoi(js.Version)
-	onversion := onl["Version"].(int)
+	fmt.Println("→ "+onl["Version"].(string)+":: Checking for updates.")
+//	fmt.Println("RAW: "+js.Version)
+//	fmt.Println("RAW: "+rawonline)
+
+//	fmt.Println("---------")
+//	myversion, err := strconv.Atoi(js.Version)
+//	onversion, err := strconv.Atoi(onl["Version"].(string))
+	myversion, err := strconv.Atoi(strings.Replace(js.Version, ".", "", -1))
+	onversion, err := strconv.Atoi(rawonline)
+	time.Sleep(5000 * time.Millisecond)
 	if err == nil {
 	if onversion > myversion {
-		fmt.Println("There is a new version Available at Github!")
+		fmt.Println("→ There is a new version Available at Github!")
+	}
+
+	if onversion < myversion {
+		fmt.Println("→ No new updates available.")
+		time.Sleep(2000 * time.Millisecond)
+		fmt.Println("→ Running AutoGo:")
+	}
+
+	if onversion == myversion {
+		fmt.Println("→ No new version found.")
+		time.Sleep(2000 * time.Millisecond)
+		fmt.Println("→ Running AutoGo")
 	}
 	}
 
