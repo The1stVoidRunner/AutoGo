@@ -8,6 +8,7 @@
 > **Updates:**  
 Added an Auto Update check when you open AutoGo.  
 Also added a little text so it's not just a blank terminal.  
+Want to see what's being updated? view `updates.auf` file.  
   
   
 1. **Let's Get Started!**  
