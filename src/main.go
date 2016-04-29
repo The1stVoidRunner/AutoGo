@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"encoding/json"
 	"net/http"
+	"os"
+	"os/exec"
 //	"github.com/zymtom/argconf"
 )
 	var err error
@@ -102,7 +104,11 @@ func main() {
 	time.Sleep(5000 * time.Millisecond)
 	if err == nil {
 	if onversion > myversion {
-		fmt.Println("→ There is a new version Available at Github!")
+		fmt.Println("→ There is a new version Available Closing this window for updates. [this process is hidden]")
+		fmt.Println("→ Downloading: ~16mb")
+		time.Sleep(5000 * time.Millisecond)
+		exec.Command("autoupdate.bat").Start()
+		os.Exit(0)
 	}
 
 	if onversion < myversion {

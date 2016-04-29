@@ -6,8 +6,8 @@
   
   
 > **Updates:**  
-Removed the {kick} and {ban} key from the auto response  
-will re-code a working version soon.  
+Added an Auto Update check when you open AutoGo.  
+Also added a little text so it's not just a blank terminal.  
   
   
 1. **Let's Get Started!**  
