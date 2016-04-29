@@ -5,5 +5,5 @@ INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/h
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/helper32.exe
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/updater.exe
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/updater32.exe
-INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/custom/config.json
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/config.json
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/updater.bat
