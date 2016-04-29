@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"strconv"
 	"encoding/json"
+	"net/http"
 //	"github.com/zymtom/argconf"
 )
 	var err error
@@ -22,8 +23,6 @@ import (
 type update struct {
 	Version		int
 }
-
-
 
 
 
@@ -57,8 +56,15 @@ func isMaster(server string, user string) bool {
 
 
 
+func getJson(url string, target interface{}) error {
+    r, err := http.Get(url)
+    if err != nil {
+        return err
+    }
+    defer r.Body.Close()
 
-
+    return json.NewDecoder(r.Body).Decode(target)
+}
 
 
 
@@ -75,6 +81,22 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 		return
+	}
+
+
+
+	fmt.Println("→ AutoGo 1.7.5:: Checking for updates.")
+
+	var onl map[string]interface{}
+
+	getJson("https://raw.githubusercontent.com/proxikal/AutoGo/master/config.json", &onl)
+
+	myversion, err := strconv.Atoi(js.Version)
+	onversion := onl["Version"].(int)
+	if err == nil {
+	if onversion > myversion {
+		fmt.Println("There is a new version Available at Github!")
+	}
 	}
 
 	// Register messageCreate as a callback for the messageCreate events.
@@ -202,11 +224,24 @@ if err == nil {
 
 
 
-
+/*
 ar1 := AutoResponseSystem(c.GuildID, in.BotMaster, in.Prefix, s, m)
 if ar1 != "" {
 	s.ChannelMessageSend(m.ChannelID, ar1)
 }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -230,6 +265,7 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 		Silent:			in.Silent,
 		HelpCmd:		in.HelpCmd,
 		BotAutoRole:	in.BotAutoRole,
+		Version:		in.Version,
 		}
 	b, err := json.MarshalIndent(newConf, "", "   ")
 	if err == nil {
@@ -249,10 +285,46 @@ if strings.HasPrefix(m.Content, in.Prefix) {
 
 
 
+/*
+if strings.HasPrefix(strings.ToLower(m.Content), in.Prefix + "youtube") {
+str := strings.Replace(m.Content, in.Prefix + "youtube ", "", -1)
+s.ChannelMessageSend(m.ChannelID, GetYoutube(str))
+}
+*/
 
 
 
 
+
+
+if strings.HasPrefix(strings.ToLower(m.Content), in.Prefix + cmd.Cats) {
+	var img map[string]interface{}
+
+	getJson("http://random.cat/meow", &img)
+
+	newcat := img["file"].(string)
+	newresp := strings.Replace(resp.Cats, "{data}", newcat, -1)
+	s.ChannelTyping(m.ChannelID)
+	time.Sleep(1000 * time.Millisecond)
+	s.ChannelMessageSend(m.ChannelID, newresp)
+}
+
+
+
+
+if strings.HasPrefix(strings.ToLower(m.Content), in.Prefix + cmd.Giphy) {
+	str := strings.Replace(m.Content, in.Prefix + cmd.Giphy + " ", "", -1)
+	str = strings.Replace(str, " ", "+", -1)
+
+	var img map[string]map[string]interface{}
+	getJson("http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag="+str, &img)
+
+	newcat := img["data"]["image_original_url"].(string)
+	newresp := strings.Replace(resp.Giphy, "{data}", newcat, -1)
+	s.ChannelTyping(m.ChannelID)
+	time.Sleep(1000 * time.Millisecond)
+	s.ChannelMessageSend(m.ChannelID, newresp)
+}
 
 
 
@@ -465,6 +537,45 @@ if in.Admin == m.Author.ID && strings.HasPrefix(m.Content, in.Prefix + "rename")
 
 
 
+
+
+
+if strings.HasPrefix(strings.ToLower(m.Content), in.Prefix + cmd.Locateip) {
+	str := strings.Replace(m.Content, in.Prefix + cmd.Locateip+" ", "", -1)
+//	var lo string
+	var ip map[string]interface{}
+	getJson("http://ip-api.com/json/"+str, &ip)
+
+	region := ip["regionName"].(string)
+	zipcode := ip["zip"].(string)
+	// longitude := ip["lon"].(float64)
+	// latitude := ip["lat"].(float64)
+	country := ip["country"].(string)
+	city := ip["city"].(string)
+	timezone := ip["timezone"].(string)
+	isp := ip["isp"].(string)
+	who := ip["as"].(string)
+	theip := ip["query"].(string)
+
+	// lo = longitude
+	// latitude = string(latitude)
+
+
+	newresp := strings.Replace(resp.Locateip, "{ip}", theip, -1)
+	newresp = strings.Replace(newresp, "{region}", region, -1)
+	newresp = strings.Replace(newresp, "{zip}", zipcode, -1)
+//	newresp = strings.Replace(newresp, "{long}", longitude, -1)
+//	newresp = strings.Replace(newresp, "{lat}", latitude, -1)
+	newresp = strings.Replace(newresp, "{country}", country, -1)
+	newresp = strings.Replace(newresp, "{city}", city, -1)
+	newresp = strings.Replace(newresp, "{timezone}", timezone, -1)
+	newresp = strings.Replace(newresp, "{isp}", isp, -1)
+	newresp = strings.Replace(newresp, "{who}", who, -1)
+
+	s.ChannelTyping(m.ChannelID)
+	time.Sleep(1000 * time.Millisecond)
+	s.ChannelMessageSend(m.ChannelID, newresp)
+}
 
 
 
@@ -1603,6 +1714,24 @@ if in.AntiLink == true && in.BotMaster == false {
 
 
 
+
+
+if strings.Contains(strings.ToLower(m.Content), "--chanid") {
+	s.ChannelMessageSend(m.ChannelID, "This channel's ID: `"+m.ChannelID+"`")
+}
+
+
+
+if strings.Contains(strings.ToLower(m.Content), "--getid") {
+	s.ChannelMessageSend(m.ChannelID, "This channel's ID: `"+m.ChannelID+"`")
+}
+
+
+
+
+
+
+
 if strings.Contains(strings.ToLower(m.Content), "--name") && in.Admin == m.Author.ID {
 	str := strings.Replace(m.Content, "--name ", "", -1)
 
@@ -1615,9 +1744,13 @@ if strings.Contains(strings.ToLower(m.Content), "--name") && in.Admin == m.Autho
 
 
 if strings.Contains(strings.ToLower(m.Content), "--avatar") && in.Admin == m.Author.ID {
+	fmt.Println("IT worked.")
 	str := strings.Replace(m.Content, "--avatar ", "", -1)
 	if str != "" {
-		s.UserUpdate(s.State.User.Email, in.Bot, s.State.User.Username, str, "")
+		_, err = s.UserUpdate(s.State.User.Email, in.Bot, s.State.User.Username, str, "")
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
@@ -1794,13 +1927,10 @@ s.ChannelMessageSend(k.ID, "You have sucessfully installed `AutoGo` check out `c
 
 
 
-
-/*
 if m.Author.ID != s.State.User.ID {
  // -#$-
 var auto []string
 var cn int
-cn = 0
 auto, err = readLines("autoresponse.txt")
 if err == nil {
 	for _, ars := range auto {
@@ -1815,62 +1945,24 @@ if err == nil {
 		}
 
 
-
 		if dont == false && strings.Contains(ars, "=") {
-			dokick := bool
-			doban := bool
+			cn = 0
+		//	domod := false
+		//	safe := false
+
+
 	//	fmt.Println("RAW: " + ars)
 		ardat := strings.Split(ars, "=")
 		trigger := ardat[0]
 		response := strings.Replace(ars, trigger+"=", "", -1)
-	//	response := ardat[1]
 		response = strings.Replace(response, "{user}", "<@"+m.Author.ID+">", -1)
 		response = strings.Replace(response, "{/user}", m.Author.Username, -1)
 		
-		cntrole := 0
-	*/
-		/*
-		// lets work on excluding roles from triggers.
-		if strings.Contains(response, "{exc=") {
-			newdat := strings.Split(response, "{exc=")
-			newdat = strings.Split(newdat[1], "}")
-			exclude := newdat[0]
-			// let's see if it's multiple roles or just one.
-			if strings.Contains(exclude, ",") {
-				excluded := strings.Split(exclude, ",")
-				for _, vR := range excluded {
-					if isMemberRole(s, c.GuildID, m.Author.ID, vR) == true {
-						fmt.Println("Found the role "+vR)
-						response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
-						cntrole++
-					}
-				} // checking for multiple ppl.
-			} else {
-				// only a single role is detected.
-				if isMemberRole(s, c.GuildID, m.Author.ID, exclude) == true {
-					fmt.Println("Found the single role: "+exclude)
-					response = strings.Replace(response, "{exc="+exclude+"}", "", -1)
-					cntrole++
-				}
-			} // end of excludes check
-		} // end of excluding roles from triggers
-		*/
-/*
-	if in.BotMaster == false { 
-		if strings.Contains(response, "{kick}") {
-			dokick = true
-		}
-
-		if strings.Contains(response, "{ban}") {
-			doban = true
-		}
-	}
 
 
 		if strings.HasPrefix(trigger, "&") {
 			cn++
 			isfind = true
-	//		fmt.Println("Found: &")
 			trigger = strings.Replace(trigger, "&", "", -1)
 		}
 
@@ -1888,11 +1980,15 @@ if err == nil {
 	if strings.Contains(response, ":br") {
 		response = strings.Replace(response, ":br", "\n", -1)
 	}
-	if cntrole == 0 {
+
+
 	//	fmt.Println("Trigger: " + trigger)
 	//	fmt.Println("Response: " + response)
 		// just a basic ARS trigger. Later i will code for {find=word}
-		if m.Content == trigger {
+
+
+
+		if m.Content == trigger && isfind == false {
 			if ispm == false {
 				s.ChannelTyping(m.ID)
 				time.Sleep(1000 * time.Millisecond)
@@ -1907,13 +2003,16 @@ if err == nil {
 			} // check if it's a pm or a server request.
 		} // end of basic trigger
 
-		if strings.Contains(m.Content, trigger) && isfind == true && cn == 1 {
-	//		fmt.Println("It has worked!")
-			s.ChannelTyping(m.ID)
+
+		if strings.Contains(strings.ToLower(m.Content), trigger) && isfind == true && cn == 1 {
+			fmt.Println("It has worked!")
+			s.ChannelTyping(m.ChannelID)
 			time.Sleep(1000 * time.Millisecond)
-			s.ChannelMessageSend(m.ChannelID, response)				
+			s.ChannelMessageSend(m.ChannelID, response)	
 		}
-		} // end of cntrole == 0
+
+
+/*
 		if dokick == true {
 			response = strings.Replace(response, "{kick}", "", -1)
 			s.GuildMemberDelete(c.GuildID, m.Author.ID)
@@ -1923,12 +2022,11 @@ if err == nil {
 			response = strings.Replace(response, "{ban}", "", -1)
 			s.GuildBanCreate(c.GuildID, m.Author.ID, 10)
 		}
-
+*/
 		} // end of dont == false
 	} // end of for loop
 } // check to see if they have autoresponse.txt file in bot dir.
 }
-*/
 
 
 
@@ -2006,7 +2104,7 @@ if m.User.Bot == true {
     				m.Roles = append(m.Roles, v.ID)
     				s.GuildMemberEdit(m.GuildID, m.User.ID, m.Roles)
     				if in.Silent == false {
-    					newdata := strings.Replace(resp.BotAutoRoleMsg, "{data}", in.RoleSys, -1)
+    					newdata := strings.Replace(resp.BotAutoRoleMsg, "{data}", in.BotAutoRole, -1)
     					newdata = strings.Replace(newdata, "{user}", "<@"+m.User.ID+">", -1)
 						s.ChannelMessageSend(m.GuildID, newdata)
 					}

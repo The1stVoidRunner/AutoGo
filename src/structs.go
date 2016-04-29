@@ -18,6 +18,7 @@ type obj struct {
 	Active		string
 	HelpCmd		string
 	BotAutoRole	string
+	Version		string
 }
 
 
@@ -51,6 +52,9 @@ type responses struct {
 	BotAutoRoleMsg		string
 	AutoRoleMsg			string
 	Rolecolor			string
+	Cats				string
+	Giphy				string
+	Locateip			string
 }
 
 type role struct {
@@ -94,4 +98,7 @@ type commands struct {
 	Unmute			string
 	BotAutoRole		string
 	Rolecolor		string
+	Cats			string
+	Giphy			string
+	Locateip		string
 }
