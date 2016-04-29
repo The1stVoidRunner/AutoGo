@@ -6,9 +6,10 @@
   
   
 > **Updates:**  
-Added an Auto Update check when you open AutoGo.  
-Also added a little text so it's not just a blank terminal.  
-Want to see what's being updated? view `updates.auf` file.  
+Updater has been moved from `helper.exe` to `updater.exe`  
+This will allow helper to get his required updates as well.  
+If you're updating from an early version: **You will need to download helper yourself.**  
+From this point on everything will be auto updated and i'll alert when `updater.exe` needs updating.  
   
   
 1. **Let's Get Started!**  

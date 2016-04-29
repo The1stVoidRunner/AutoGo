@@ -9,7 +9,7 @@ ECHO #                      WRITTEN BY: PROXY                      #
 ECHO ###############################################################
 ECHO.
 cd System\helper
-helper.exe -up
+updater.exe
 TIMEOUT 3
 helper.exe -upd1
 helper.exe -upd2
