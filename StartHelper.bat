@@ -31,6 +31,8 @@ IF %M%==no GOTO upd32
 
 :upd64
 cd System/helper
+updater.exe
+TIMEOUT 3
 helper.exe -upd1
 helper.exe -upd2
 helper.exe -upd3
@@ -38,6 +40,8 @@ GOTO MENU
 
 :upd32
 cd System/helper
+updater32.exe
+TIMEOUT 3
 helper32.exe -upd1
 helper32.exe -upd2
 helper32.exe -upd3
