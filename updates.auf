@@ -5,3 +5,4 @@ INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/custom/c
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/custom/responses.json
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/custom/antilink.json
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/config.json
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/StartHelper.bat

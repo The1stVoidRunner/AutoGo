@@ -12,6 +12,7 @@ This can be used in all responses.
 > Customized Antilinks System.  
 People can choose what they want filtered in the `AntiLink` system.  
 Be sure to check out the `System/custom/antilink.json` file.  
+> Fixed some bugs that were working against the auto updater.  
   
   
 1. **Let's Get Started!**  
