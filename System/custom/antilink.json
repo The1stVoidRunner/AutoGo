@@ -1,0 +1,9 @@
+{
+	"http://":	"true",
+	"https://":	"true",
+	"www.":		"true",
+	".com":		"true",
+	".org":		"true",
+	".net":		"true",
+	".gg":		"true"
+}

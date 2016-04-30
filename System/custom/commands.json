@@ -22,5 +22,7 @@
 	"Rolecolor":"rolecolor",
 	"Cats":"cats",
 	"Giphy":"giphy",
-	"Locateip":"locateip"
+	"Locateip":"locateip",
+	"ChannelID":"channelid",
+	"GetID":"getid"
 }

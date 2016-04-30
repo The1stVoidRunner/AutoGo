@@ -6,10 +6,12 @@
   
   
 > **Updates:**  
-Updater has been moved from `helper.exe` to `updater.exe`  
-This will allow helper to get his required updates as well.  
-If you're updating from an early version: **You will need to download helper yourself.**  
-From this point on everything will be auto updated and i'll alert when `updater.exe` needs updating.  
+People have the option if they want AutoGo to show typing  
+If you look at the `responses.json` you will see `{type}`  
+This can be used in all responses.  
+> Customized Antilinks System.  
+People can choose what they want filtered in the `AntiLink` system.  
+Be sure to check out the `System/custom/antilink.json` file.  
   
   
 1. **Let's Get Started!**  

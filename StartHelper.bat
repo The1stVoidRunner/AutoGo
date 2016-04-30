@@ -4,7 +4,7 @@ COLOR 03
 :MENU
 ECHO.
 ECHO ###############################################################
-ECHO #                 AutoGo Helper System 1.0.0                  #
+ECHO #                 AutoGo Helper System 1.5.2                  #
 ECHO #                      WRITTEN BY: PROXY                      #
 ECHO #-------------------------------------------------------------#
 ECHO #              1. Update AutoGo Files                         #
@@ -12,7 +12,9 @@ ECHO #              2. Make A Bot Application                      #
 ECHO #              3. Get Your Bot's Invite link                  #
 ECHO #              4. Initiate AutoGo (Might have to pm him)      #
 ECHO #              5. Create Bot Commander and muted Roles        #
-ECHO #              6. Learn howto: post msg every x hours         #
+ECHO #              6. Howto: post msg every x hours               #
+ECHO #              7. Rename a Role.                              #
+ECHO #              8. Change role color                           #
 ECHO ###############################################################
 ECHO.
 
@@ -23,6 +25,8 @@ IF %M%==3 GOTO botinv
 IF %M%==4 GOTO initbot
 IF %M%==5 GOTO botrole
 IF %M%==6 GOTO botinfo
+IF %M%==7 GOTO rename
+IF %M%==8 GOTO rolecolor
 
 :runupdate
 SET /P M=Are you on 64bit? (yes\no):
@@ -129,6 +133,14 @@ ECHO Accepted -h(hours): 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 24
 SET /P M=Would you like to go back to the main menu? (yes\no):
 IF %M%==yes GOTO MENU
 IF %M%==no GOTO exit
+
+:rename
+cd System/helper/tools
+renamerole.bat
+
+:rolecolor
+cd System/helper/tools
+rolecolor.bat
 
 :exit
 CLS
