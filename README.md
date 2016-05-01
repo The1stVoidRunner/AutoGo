@@ -6,13 +6,8 @@
   
   
 > **Updates:**  
-People have the option if they want AutoGo to show typing  
-If you look at the `responses.json` you will see `{type}`  
-This can be used in all responses.  
-> Customized Antilinks System.  
-People can choose what they want filtered in the `AntiLink` system.  
-Be sure to check out the `System/custom/antilink.json` file.  
-> Fixed some bugs that were working against the auto updater.  
+Removed the role color in `helper.exe` because people are abusing it.  
+Those who change the roles too fast will most likely get banned from discord.   
   
   
 1. **Let's Get Started!**  
