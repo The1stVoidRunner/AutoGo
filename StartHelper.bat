@@ -14,7 +14,6 @@ ECHO #              4. Initiate AutoGo (Might have to pm him)      #
 ECHO #              5. Create Bot Commander and muted Roles        #
 ECHO #              6. Howto: post msg every x hours               #
 ECHO #              7. Rename a Role.                              #
-ECHO #              8. Change role color                           #
 ECHO ###############################################################
 ECHO.
 
