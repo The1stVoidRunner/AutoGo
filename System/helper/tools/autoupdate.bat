@@ -12,5 +12,3 @@ cd ../
 updater.exe
 TIMEOUT 3
 helper.exe -upd1
-helper.exe -upd2
-helper.exe -upd3

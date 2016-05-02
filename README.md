@@ -6,8 +6,14 @@
   
   
 > **Updates:**  
-Removed the role color in `helper.exe` because people are abusing it.  
-Those who change the roles too fast will most likely get banned from discord.   
+Huge update! make sure to manually download the updater.exe or updater32.exe  
+if you're updating from an older version.  
+In your `config.json` file if you're using 32bit make sure to change PC from 64bit to `32bit`  
+**Added a changelog in StartHelper.bat**  
+  
+
+> AutoGo will check for updates every 3 hours. This is subject to change in the future.  
+The instructions below will be updated tomorrow morning
   
   
 1. **Let's Get Started!**  

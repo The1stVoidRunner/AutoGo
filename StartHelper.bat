@@ -11,9 +11,10 @@ ECHO #              1. Update AutoGo Files                         #
 ECHO #              2. Make A Bot Application                      #
 ECHO #              3. Get Your Bot's Invite link                  #
 ECHO #              4. Initiate AutoGo (Might have to pm him)      #
-ECHO #              5. Create Bot Commander and muted Roles        #
+ECHO #              5. Create Bot Commander and muted Role         #
 ECHO #              6. Howto: post msg every x hours               #
 ECHO #              7. Rename a Role.                              #
+ECHO #              8. Changelog for 1.8.5                         #
 ECHO ###############################################################
 ECHO.
 
@@ -25,7 +26,7 @@ IF %M%==4 GOTO initbot
 IF %M%==5 GOTO botrole
 IF %M%==6 GOTO botinfo
 IF %M%==7 GOTO rename
-IF %M%==8 GOTO rolecolor
+IF %M%==8 GOTO changelog
 
 :runupdate
 SET /P M=Are you on 64bit? (yes\no):
@@ -37,8 +38,6 @@ cd System/helper
 updater.exe
 TIMEOUT 3
 helper.exe -upd1
-helper.exe -upd2
-helper.exe -upd3
 GOTO MENU
 
 :upd32
@@ -46,8 +45,6 @@ cd System/helper
 updater32.exe
 TIMEOUT 3
 helper32.exe -upd1
-helper32.exe -upd2
-helper32.exe -upd3
 GOTO MENU
 
 :botapp
@@ -137,9 +134,37 @@ IF %M%==no GOTO exit
 cd System/helper/tools
 renamerole.bat
 
-:rolecolor
-cd System/helper/tools
-rolecolor.bat
+:changelog
+ECHO.
+ECHO ===================================
+ECHO - AutoGo Change log: 1.8.5
+ECHO - Monday May 02, 2016 12:00 AM(EST)
+ECHO - Suggested by: Dog2Puppy
+ECHO - ---------------------------------
+ECHO - Fixed the meme and joke command.
+ECHO - Added the {del} key to autoresponse system.
+ECHO - Took away rolecolor from helper.exe due to abuse.
+ECHO - Will add back when i find a way to limit the system.
+ECHO - 
+ECHO - Added a way to Enable\Disable commands.
+ECHO - 
+ECHO - Huge updates for updater.exe, helper.exe
+ECHO - 
+ECHO - config.json Added PC and CommanderRole
+ECHO - 
+ECHO - PC: will help autogo figure out if you're on 32bit or 64bit.
+ECHO - Set this accordingly for proper updates and functions.
+ECHO - 
+ECHO - CommanderRole: let's you choose the name of your Bot Commander role.
+ECHO - 
+ECHO - Will be adding a lot more keys for the auto response system.
+ECHO - Fix Credits: EdibleDerpy, Doorstop, Peter, Dog2Puppy, SkyWielder
+ECHO - Tore, scattrbrain
+ECHO ===================================
+ECHO.
+SET /P M=Would you like to go back to the main menu? (yes\no):
+IF %M%==yes GOTO MENU
+IF %M%==no GOTO exit
 
 :exit
 CLS

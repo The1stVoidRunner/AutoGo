@@ -21,9 +21,9 @@
 
 // Let's setup a word filter to kick/ban someone.
 // &faggot={kick}I have kicked {user} for being dumb.
-// &fuck={ban}I have banned {user} for swearing.
+// &fuck={del}{ban}I have banned {user} for swearing.
 
-
+// &ass ={del}This trigger deleted ass not bass or mass
 
 
 // using & will search for that text in someones message. if it finds the word AutoGo will respond.

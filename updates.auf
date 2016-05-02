@@ -1,5 +1,13 @@
-PACKAGE=~18mb
-INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/helper.exe
-INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/helper32.exe
+PACKAGE=~60mb
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/autogo.exe
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/autogo_32bit.exe
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/config.json
 INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/StartHelper.bat
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/updater.bat
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/updater32.bat
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/custom/enabled.json
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/helper.exe
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/helper32.exe
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/updater.exe
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/updater32.exe
+INSTALL=https://raw.githubusercontent.com/proxikal/AutoGo/master/System/helper/tools/autoupdate.bat
