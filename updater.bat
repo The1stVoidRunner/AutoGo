@@ -2,7 +2,6 @@
 TITLE AutoGo Updater 64bit
 COLOR 03
 :MENU
-taskkill /I autogo.exe
 ECHO.
 ECHO ###############################################################
 ECHO #                 AutoGo Helper: AUTO UPDATER 1.0             #
